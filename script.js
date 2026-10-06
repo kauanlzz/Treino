@@ -2,6 +2,7 @@
 
 const STORAGE_KEY = "ritmo-weekly-plan-v1";
 const MAX_WORKOUT_NAME_LENGTH = 80;
+const MAX_OBSERVATION_LENGTH = 240;
 const DAYS = [
   { id: "seg", name: "Segunda-feira" },
   { id: "ter", name: "Terça-feira" },
@@ -45,6 +46,7 @@ function loadSchedule() {
         .map((item) => ({
           id: item.id,
           name: item.name.trim().slice(0, MAX_WORKOUT_NAME_LENGTH),
+          observation: typeof item.observation === "string" ? item.observation.slice(0, MAX_OBSERVATION_LENGTH) : "",
           completed: item.completed === true,
         }));
       return [id, workouts];
@@ -78,6 +80,12 @@ function createElement(tagName, className, text) {
   return element;
 }
 
+function resizeObservation(observation) {
+  observation.style.height = "auto";
+  const borderHeight = observation.offsetHeight - observation.clientHeight;
+  observation.style.height = `${observation.scrollHeight + borderHeight}px`;
+}
+
 function renderWorkout(dayId, workout) {
   const row = createElement("div", `workout-row${workout.completed ? " is-complete" : ""}`);
   const checkbox = createElement("input", "workout-check");
@@ -90,7 +98,16 @@ function renderWorkout(dayId, workout) {
 
   const copy = createElement("div", "workout-copy");
   const name = createElement("span", "workout-name", workout.name);
-  copy.append(name);
+  const observation = createElement("textarea", "workout-observation");
+  observation.rows = 2;
+  observation.maxLength = MAX_OBSERVATION_LENGTH;
+  observation.placeholder = "Adicionar observação...";
+  observation.value = workout.observation;
+  observation.dataset.action = "observation";
+  observation.dataset.day = dayId;
+  observation.dataset.id = workout.id;
+  observation.setAttribute("aria-label", `Observação para ${workout.name}`);
+  copy.append(name, observation);
 
   const removeButton = createElement("button", "remove-button", "Remover");
   removeButton.type = "button";
@@ -153,6 +170,7 @@ function renderDay(day, index) {
 
 function renderSchedule() {
   weekGrid.replaceChildren(...DAYS.map((day, index) => renderDay(day, index)));
+  weekGrid.querySelectorAll('textarea[data-action="observation"]').forEach(resizeObservation);
   const workouts = DAYS.flatMap(({ id }) => schedule[id]);
   const completed = workouts.filter(({ completed }) => completed).length;
   const planned = workouts.length;
@@ -200,6 +218,16 @@ weekGrid.addEventListener("click", (event) => {
 });
 
 weekGrid.addEventListener("change", (event) => {
+  const observation = event.target;
+  if (observation instanceof HTMLTextAreaElement && observation.dataset.action === "observation") {
+    const workout = schedule[observation.dataset.day].find((item) => item.id === observation.dataset.id);
+    if (!workout) return;
+
+    workout.observation = observation.value;
+    saveSchedule();
+    return;
+  }
+
   const checkbox = event.target;
   if (!(checkbox instanceof HTMLInputElement) || checkbox.dataset.action !== "complete") return;
 
@@ -213,6 +241,13 @@ weekGrid.addEventListener("change", (event) => {
   [...weekGrid.querySelectorAll('input[data-action="complete"]')]
     .find((item) => item.dataset.id === workout.id)
     ?.focus();
+});
+
+weekGrid.addEventListener("input", (event) => {
+  const observation = event.target;
+  if (observation instanceof HTMLTextAreaElement && observation.dataset.action === "observation") {
+    resizeObservation(observation);
+  }
 });
 
 weekGrid.addEventListener("submit", (event) => {
@@ -234,6 +269,7 @@ weekGrid.addEventListener("submit", (event) => {
   schedule[day].push({
     id: createWorkoutId(),
     name: name.slice(0, MAX_WORKOUT_NAME_LENGTH),
+    observation: "",
     completed: false,
   });
   openDays.delete(day);

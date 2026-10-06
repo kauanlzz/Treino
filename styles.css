@@ -26,7 +26,7 @@ body {
 
 button, input, select { font: inherit; accent-color: var(--green); }
 button, input, select, a { -webkit-tap-highlight-color: transparent; }
-button:focus-visible, input:focus-visible, select:focus-visible, a:focus-visible {
+button:focus-visible, input:focus-visible, select:focus-visible, textarea:focus-visible, a:focus-visible {
   outline: 3px solid rgb(20 125 100 / 35%);
   outline-offset: 3px;
 }
@@ -74,8 +74,10 @@ h1 { margin-bottom: 10px; font-size: clamp(30px, 4vw, 44px); font-weight: 700; l
 .workout-row { display: grid; grid-template-columns: 18px minmax(0, 1fr) auto; align-items: start; gap: 9px; padding: 12px 0; border-bottom: 1px solid #edf1ee; }
 .workout-row:last-child { border-bottom: 0; }
 .workout-check { width: 16px; height: 16px; margin: 2px 0 0; cursor: pointer; }
-.workout-copy { min-width: 0; }
+.workout-copy { display: grid; min-width: 0; gap: 7px; }
 .workout-name { display: block; overflow-wrap: anywhere; color: var(--ink); font-size: 12px; font-weight: 600; line-height: 1.45; }
+.workout-observation { width: 100%; min-width: 0; min-height: 38px; padding: 7px 8px; overflow-y: hidden; resize: none; border: 1px solid #e4ebe6; border-radius: 4px; background: #fbfcfb; color: var(--ink); font: inherit; font-size: 11px; line-height: 1.4; }
+.workout-observation::placeholder { color: #98a39d; }
 .workout-type { display: inline-block; margin-top: 5px; padding: 3px 6px; border-radius: 3px; background: #edf4ef; color: #547367; font-family: "DM Mono", Consolas, monospace; font-size: 9px; }
 .workout-type[data-type="cardio"] { background: #fff0e9; color: #a75235; }
 .workout-type[data-type="mobilidade"] { background: #fff6d9; color: #81641e; }
