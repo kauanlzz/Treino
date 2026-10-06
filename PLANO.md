@@ -1,5 +1,7 @@
 # Gerenciador Semanal de Treinos
 
+NOVA IDEIA: Adicionar descrição dentro de cada exercício, para ficar mais fácil entender o que deve ser feito
+
 ## Objetivo
 
 Aplicação web simples para organizar uma rotina recorrente de exercícios de segunda a domingo, acompanhar treinos concluídos e manter os dados salvos no navegador.
