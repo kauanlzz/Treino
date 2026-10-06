@@ -1,0 +1,55 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="description" content="Organize seus treinos semanais e acompanhe o que já foi concluído." />
+    <title>Ritmo | Semana de treinos</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
+    <link rel="stylesheet" href="styles.css" />
+    <script src="script.js" defer></script>
+  </head>
+  <body>
+    <div class="app-shell">
+      <header class="topbar">
+        <a class="brand" href="#inicio" aria-label="Ritmo, início">
+          <span class="brand-mark" aria-hidden="true">R</span>
+          <span>RITMO<span class="brand-period">.</span></span>
+        </a>
+        <span class="topbar-label">MEU PLANO DE TREINO</span>
+      </header>
+
+      <main id="inicio">
+        <section class="intro" aria-labelledby="page-title">
+          <div class="intro-copy">
+            <p class="eyebrow"><span></span> ROTINA RECORRENTE</p>
+            <h1 id="page-title">Semana de treinos</h1>
+          </div>
+          <div class="progress-panel" aria-label="Resumo dos treinos">
+            <div class="progress-numbers">
+              <div><span class="progress-value" id="completed-count">0</span><span class="progress-caption">concluídos</span></div>
+              <span class="progress-divider" aria-hidden="true">/</span>
+              <div><span class="progress-value progress-total" id="planned-count">0</span><span class="progress-caption">planejados</span></div>
+            </div>
+            <div class="progress-track" id="progress-track" role="progressbar" aria-label="Treinos concluídos" aria-valuemin="0" aria-valuemax="0" aria-valuenow="0">
+              <span class="progress-fill" id="progress-fill"></span>
+            </div>
+          </div>
+        </section>
+
+        <div class="schedule-heading">
+          <h2>Meu cronograma</h2>
+          <p>SEGUNDA A DOMINGO</p>
+        </div>
+        <p class="visually-hidden" id="status-message" role="status" aria-live="polite"></p>
+        <section class="week-grid" id="week-grid" aria-label="Cronograma semanal de treinos"></section>
+      </main>
+
+      <footer class="footer">
+        <span>Faça o que precisa ser feito <span class="brand-period">.</span></span>
+      </footer>
+    </div>
+  </body>
+</html>
